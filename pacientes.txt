@@ -1,0 +1,9 @@
+101;Ana Gomez;10;37.5;110;4;abdomen;0;0;0;1
+102;Luis Rojas;35;36.8;130;8;extremidad;1;0;1;5
+103;Pedro Soto;42;37.0;125;6;extremidad;1;0;0;2
+104;Maria Paz;60;36.5;140;5;cabeza;0;1;0;3
+105;Carlos Vera;55;37.2;160;7;pecho;0;0;0;1
+106;Sofia Toro;28;39.1;115;9;abdomen;0;0;0;1
+107;Jorge Nilo;70;37.1;120;3;otro;0;0;0;4
+108;Camila Ruiz;25;36.9;110;2;cabeza;0;0;0;0
+109;Juan Error;30;ALTA;120;5;otro;0;0;0;0
