@@ -27,4 +27,8 @@ add_executable(taller2
         pacientes.txt
         Taller-II/include/NodoDecision.h
         Taller-II/include/ArbolDecision.h
-        Taller-II/src/ArbolDecision.cpp)
+        Taller-II/src/ArbolDecision.cpp
+        Taller-II/include/NodoAVL.h
+        Taller-II/include/ArbolAVL.h
+        Taller-II/src/ArbolAVL.cpp
+        Taller-II/src/ArbolAVL.h)
