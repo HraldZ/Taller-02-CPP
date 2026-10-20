@@ -1,104 +1,127 @@
-//
-// Created by joanj on 08-09-2026.
-//
-#include "Paciente.h"
-#include "Cola.h"
+#include "../include/Paciente.h"
+#include "../include/Cola.h"
+#include "../include/Lector.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "Lector.h"
+
 using namespace std;
 
-Lector::Lector(){}
-
-// hay que armar la queue con nodos
-
+Lector::Lector() {}
 
 Cola* Lector::armarCola(string ruta) {
     Cola* cola = new Cola();
     char separador = ';';
     ifstream archivo(ruta);
-    string linea;
+
+    //abrir archivo y ver si es valido
     if (!archivo.is_open()) {
-        cout << " Archivo no abierto ERROR" << endl;
+        cout << "no se pudo abrir el archivo " << ruta << endl;
+        return cola;
     }
-    while (getline(archivo,linea)) {
+
+    string linea;
+    int numeroLinea = 0;
+
+    while (getline(archivo, linea)) {
+        numeroLinea++;
+
+       //esto se salta las lineas vacias
+        if (linea == "" || linea == "\r") {
+            continue;
+        }
+
         stringstream ss(linea);
-        string id,nombre , tipoDolor , edadS, dolorS, traumaS , sintomasNeurologicosS , requiereCirujiaS , diasHospitalizacionS ,temperaturaS , presionArterialS;
+        string id, nombre, edadS, tempS, presionS, dolorS, tipoDolor;
+        string traumaS, neuroS, cirugiaS, hospS;
 
-        getline(ss,id,separador);
-        getline(ss,nombre,separador);
-        getline(ss,edadS,separador);
-        getline(ss,temperaturaS,separador);
-        getline(ss,presionArterialS,separador);
-        getline(ss,dolorS,separador);
-        getline(ss,tipoDolor ,separador);
-        getline(ss,traumaS,separador);
-        getline(ss,sintomasNeurologicosS,separador);
-        getline(ss,requiereCirujiaS,separador);
-        getline(ss,diasHospitalizacionS,separador);
+       //sacar las partes
+        getline(ss, id, separador);
+        getline(ss, nombre, separador);
+        getline(ss, edadS, separador);
+        getline(ss, tempS, separador);
+        getline(ss, presionS, separador);
+        getline(ss, dolorS, separador);
+        getline(ss, tipoDolor, separador);
+        getline(ss, traumaS, separador);
+        getline(ss, neuroS, separador);
+        getline(ss, cirugiaS, separador);
+        getline(ss, hospS, separador);
 
-        int edad;
-        float temperatura;
-        int presionArterial;
-        int dolor;
-        bool trauma;
-        bool sintomasNeurologicos;
-        bool requiereCirujia;
-        int diasHospitalizacion;
+       //ver si hay espacios vacios
+        if (id == "" || nombre == "" || edadS == "" || tempS == "" ||
+            presionS == "" || dolorS == "" || tipoDolor == "" ||
+            traumaS == "" || neuroS == "" || cirugiaS == "" || hospS == "") {
+            cout << "Linea " << numeroLinea << " fallada, faltan datos" << endl;
+            continue;
+        }
+
+        if (cola->existeId(id)) {
+            cout << "Linea " << numeroLinea << ", el paciente con ID " << id << " ya existe." << endl;
+            continue;
+        }
+
+        int edad = 0;
+        float temperatura = 0.0;
+        float presion = 0.0;
+        int dolor = 0;
+        int traumaNum = 0;
+        int neuroNum = 0;
+        int cirugiaNum = 0;
+        int diasHosp = 0;
 
         try {
             edad = stoi(edadS);
-            temperatura = stof(temperaturaS);
+            temperatura = stof(tempS);
+            presion = stof(presionS);
             dolor = stoi(dolorS);
-            presionArterial = stoi(presionArterialS);
-
-            //pregunta si el int valor trauma es igual a 1 si es igual manda un true sino false.
-            int  valorTrauma = stoi(traumaS);
-            trauma =  ( valorTrauma == 1);
-
-            int valorSintomas = stoi(sintomasNeurologicosS);
-            sintomasNeurologicos = (valorSintomas == 1);
-
-            int valorCirujia = stoi(requiereCirujiaS);
-            requiereCirujia = (valorCirujia == 1);
-
-            diasHospitalizacion = stoi(diasHospitalizacionS);
-
-        }catch (invalid_argument& e) {
-            cout<< "Error de formato. texto a numero" << endl;
-        }catch ( out_of_range& e) {
-            cout << "error de rango numero muy grande" << endl;
-        }catch (exception& e) {
-            cout << "otro error" << endl;
+            traumaNum = stoi(traumaS);
+            neuroNum = stoi(neuroS);
+            cirugiaNum = stoi(cirugiaS);
+            diasHosp = stoi(hospS);
+        } catch (...) {
+            cout << "Linea " << numeroLinea << ", formato invalido" << id << endl;
+            continue;
         }
 
-        Paciente* paciente = new Paciente(id,nombre,edad,temperatura,presionArterial , dolor, tipoDolor, trauma,sintomasNeurologicos , requiereCirujia , diasHospitalizacion);
+        if (edad < 0 || temperatura <= 0 || presion <= 0 || diasHosp < 0) {
+            cout << "Linea " << numeroLinea << ", valores fuera de rango" << endl;
+            continue;
+        }
+
+        if (dolor < 0 || dolor > 10) {
+            cout << "Linea " << numeroLinea << ", valores fuera de rango" << endl;
+            continue;
+        }
+
+        if ((traumaNum != 0 && traumaNum != 1) ||
+            (neuroNum != 0 && neuroNum != 1) ||
+            (cirugiaNum != 0 && cirugiaNum != 1)) {
+            cout << "Linea " << numeroLinea << ", valores fuera de rango" << endl;
+            continue;
+        }
+
+        if (tipoDolor != "pecho" && tipoDolor != "cabeza" &&
+            tipoDolor != "abdomen" && tipoDolor != "extremidad" &&
+            tipoDolor != "otro") {
+            cout << "Linea " << numeroLinea << ", tipo de dolor no valido (" << tipoDolor << ")." << endl;
+            continue;
+        }
+
+        bool trauma = (traumaNum == 1);
+        bool sintomasNeurologicos = (neuroNum == 1);
+        bool requiereCirugia = (cirugiaNum == 1);
+
+        Paciente* paciente = new Paciente(
+            id, nombre, edad, temperatura, presion,
+            dolor, tipoDolor, trauma, sintomasNeurologicos,
+            requiereCirugia, diasHosp
+        );
+
         cola->encolar(paciente);
     }
+
     archivo.close();
     return cola;
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

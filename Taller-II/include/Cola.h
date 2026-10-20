@@ -15,6 +15,7 @@ private:
 public:
     Cola();
     ~Cola();
+    bool existeId(string id);
 
     void encolar(Paciente* paciente);
     Paciente* sacarDeCola();

@@ -63,6 +63,16 @@ bool Cola::estaVacia() {
     }
     return false;
 }
+bool Cola::existeId(string id) {
+    Node* actual = primero;
+    while (actual != nullptr) {
+        if (actual->paciente != nullptr && actual->paciente->getId() == id) {
+            return true;
+        }
+        actual = actual->siguiente;
+    }
+    return false;
+}
 
 Cola::~Cola() {
 
