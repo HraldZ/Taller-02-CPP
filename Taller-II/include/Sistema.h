@@ -3,13 +3,15 @@
 
 #include "Cola.h"
 #include "Servicio.h"
-#include "Pila.h"
+#include "ArbolDecision.h"
 
 class Sistema {
 private:
     Cola* colaLista;
     Servicio* cabezaServicios;
-    Pila* historial;
+    ArbolDecision* arbolDecision;
+
+    Servicio* buscarServicioPorNombre(string nombre);
 
 public:
     Sistema();
@@ -17,8 +19,11 @@ public:
 
     void inicializarServicios();
     void menuPrincipal();
-    void menuAtender();
-    void menuVerDepartamento();
+    void atenderPaciente();
+    void verDepartamentos();
+    void buscarPaciente();
+    void eliminarPaciente();
+    void verMetricasYRecorridos();
 };
 
 #endif //TALLER_I_CPP_SISTEMA_H
