@@ -7,7 +7,7 @@ Joan Zambra - 218869750 - HraldZ - ICCI - C1
 
 ## Diseño del Árbol de Decisión
 ### Esquema del Árbol
-
+```text
 ¿Edad < 14?
 |-- Sí: Pediatría
 |-- No:
@@ -29,7 +29,7 @@ Joan Zambra - 218869750 - HraldZ - ICCI - C1
                     ¿DíasHospitalización >= 2?
                     |-- Sí: Hospitalización
                     |-- No: Medicina General
-
+```
 ## Instrucciones de compilación
 
 Abrir CMD, terminal o GitHub Codespaces en la carpeta raíz del proyecto `Taller-02-CPP` y ejecutar el siguiente comando:
