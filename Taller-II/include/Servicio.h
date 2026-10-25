@@ -1,7 +1,8 @@
 #ifndef TALLER_I_CPP_SERVICIO_H
 #define TALLER_I_CPP_SERVICIO_H
 
-#include "Node.h"
+#include "ArbolAVL.h"
+#include "Paciente.h"
 #include <string>
 
 using namespace std;
@@ -9,7 +10,7 @@ using namespace std;
 class Servicio {
 private:
     string nombre;
-    Node* cabezaPacientes;
+    ArbolAVL* arbolPacientes;
     int cantidadPacientes;
 
 public:
@@ -19,8 +20,10 @@ public:
     ~Servicio();
 
     string getNombre();
+    int getCantidadPacientes();
     void agregarPaciente(Paciente* p);
     void mostrarPacientes();
+    ArbolAVL* getArbol();
 };
 
 #endif //TALLER_I_CPP_SERVICIO_H

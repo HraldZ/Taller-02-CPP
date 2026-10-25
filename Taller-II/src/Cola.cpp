@@ -75,6 +75,11 @@ bool Cola::existeId(string id) {
 }
 
 Cola::~Cola() {
-
-
+    while (primero != nullptr) {
+        Node* aBorrar = primero;
+        primero = primero->siguiente;
+        delete aBorrar->paciente;
+        delete aBorrar;
+    }
+    ultimo = nullptr;
 }

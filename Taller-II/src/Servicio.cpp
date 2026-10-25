@@ -5,51 +5,39 @@ using namespace std;
 
 Servicio::Servicio(string nombre) {
     this->nombre = nombre;
-    this->cabezaPacientes = nullptr;
+    this->arbolPacientes = new ArbolAVL();
     this->cantidadPacientes = 0;
     this->siguiente = nullptr;
 }
 
-Servicio::~Servicio() {
-    Node* actual = cabezaPacientes;
-    while (actual != nullptr) {
-        Node* BorrarActual = actual;
-        actual = actual->siguiente;
-
-        delete BorrarActual->paciente;
-
-        delete BorrarActual;
-    }
+Servicio::~Servicio()
+{
+    delete arbolPacientes;
 }
 
 string Servicio::getNombre() {
     return this->nombre;
 }
 
-void Servicio::agregarPaciente(Paciente* p) {
-    Node* nuevoNodo = new Node(p);
+int Servicio::getCantidadPacientes() {
+    return this->cantidadPacientes;
+}
 
-    if (cabezaPacientes == nullptr) {
-        cabezaPacientes = nuevoNodo;
-    } else {
-        Node* actual = cabezaPacientes;
-        while (actual->siguiente != nullptr) {
-            actual = actual->siguiente;
-        }
-        actual->siguiente = nuevoNodo;
-    }
+void Servicio::agregarPaciente(Paciente* p) {
+    arbolPacientes->insertar(p);
     cantidadPacientes++;
 }
 
-
 void Servicio::mostrarPacientes() {
-    cout << "===ESTADO " << this->nombre << "===" << endl;
-    cout << "Pacientes en el departamento de " << this->nombre << ": " << cantidadPacientes << endl;
-
-    Node* actual = cabezaPacientes;
-    while (actual != nullptr) {
-        cout << "- " << actual->paciente->getNombre() << " (" << actual->paciente->getEdad() << ")" << endl;
-        actual = actual->siguiente;
+    cout << this->nombre << endl;
+    if (arbolPacientes->estaVacio()) {
+        cout << "Sin pacientes" << endl;
+    } else {
+        cout << "Pacientes: ";
+        arbolPacientes->mostrarInorden();
     }
-    cout << endl;
+}
+
+ArbolAVL* Servicio::getArbol() {
+    return this->arbolPacientes;
 }
